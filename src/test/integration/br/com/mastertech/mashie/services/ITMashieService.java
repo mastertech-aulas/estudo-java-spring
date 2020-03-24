@@ -1,20 +1,15 @@
 package br.com.mastertech.mashie.services;
 
-import br.com.mastertech.mashie.models.Mashie;
-import br.com.mastertech.mashie.models.Statement;
-import br.com.mastertech.mashie.repositories.MashieRepository;
-import br.com.mastertech.mashie.repositories.StatementRepository;
-import br.com.mastertech.mashie.services.MashieService;
+import br.com.mastertech.mashie.data.models.Mashie;
+import br.com.mastertech.mashie.data.models.Statement;
+import br.com.mastertech.mashie.data.repositories.StatementRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +40,7 @@ public class ITMashieService {
         //given
         Mashie mashie = new Mashie();
         mashie.setId("citi");
+        mashie.setDescription("description");
         mashie.setStatements(statements);
 
         //when
@@ -53,24 +49,5 @@ public class ITMashieService {
         //then
         Assertions.assertNotNull(createdMashie);
         Assertions.assertEquals(1, mashie.getStatements().size());
-    }
-
-    @Test
-    public void shouldNotCreateMashieWithNonSavedStatements(){
-        //given
-        Mashie mashie = new Mashie();
-        mashie.setId("citi");
-
-        Statement statement = new Statement();
-        statement.setId(2);
-
-        statements.add(statement);
-
-        mashie.setStatements(statements);
-
-        //when
-        Assertions.assertThrows(JpaObjectRetrievalFailureException.class, () -> {
-            mashieService.create(mashie);
-        });
     }
 }

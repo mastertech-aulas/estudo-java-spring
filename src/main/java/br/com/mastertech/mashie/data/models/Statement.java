@@ -1,4 +1,4 @@
-package br.com.mastertech.mashie.models;
+package br.com.mastertech.mashie.data.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,18 +1,15 @@
 package br.com.mastertech.mashie.services;
 
-import br.com.mastertech.mashie.models.Mashie;
-import br.com.mastertech.mashie.models.Statement;
-import br.com.mastertech.mashie.repositories.MashieRepository;
-import br.com.mastertech.mashie.repositories.StatementRepository;
+import br.com.mastertech.mashie.data.models.Mashie;
+import br.com.mastertech.mashie.data.models.Statement;
+import br.com.mastertech.mashie.data.repositories.MashieRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,7 @@ public class MashieServiceTest {
     @Test
     public void shouldCreateMashie(){
         //given
-        Mockito.when(statementService.loadStatementsById(Mockito.anyList()))
+        Mockito.when(statementService.saveAll(Mockito.anyList()))
                 .thenReturn(statements);
         Mockito.when(mashieRepository.save(mashie)).thenReturn(mashie);
 

@@ -1,12 +1,11 @@
 package br.com.mastertech.mashie.services;
 
-import br.com.mastertech.mashie.models.Mashie;
-import br.com.mastertech.mashie.models.Statement;
-import br.com.mastertech.mashie.repositories.MashieRepository;
+import br.com.mastertech.mashie.data.models.Mashie;
+import br.com.mastertech.mashie.data.models.Statement;
+import br.com.mastertech.mashie.data.repositories.MashieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,13 +18,9 @@ public class MashieService {
     private StatementService statementService;
 
     public Mashie create(Mashie mashie){
-        List<Long> ids = new ArrayList<>();
+        List<Statement> savedStatements = statementService.saveAll(mashie.getStatements());
 
-        for(Statement statement : mashie.getStatements()){
-            ids.add(statement.getId());
-        }
-
-        mashie.setStatements(statementService.loadStatementsById(ids));
+        mashie.setStatements(savedStatements);
 
         return mashieRepository.save(mashie);
     }

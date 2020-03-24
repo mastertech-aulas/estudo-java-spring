@@ -1,18 +1,18 @@
 package br.com.mastertech.mashie.services;
 
-import br.com.mastertech.mashie.models.Statement;
-import br.com.mastertech.mashie.repositories.StatementRepository;
-import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.Assertions;
+import br.com.mastertech.mashie.data.models.Statement;
+import br.com.mastertech.mashie.data.repositories.StatementRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class StatementServiceTest {
@@ -29,20 +29,17 @@ public class StatementServiceTest {
         Statement statement = new Statement();
         statement.setText(text);
 
-        Mockito.when(statementRepository.save(statement)).thenReturn(statement);
+        List<Statement> statements = new ArrayList<>();
+        statements.add(statement);
 
-//        Mockito.when(statementRepository.save(statement)).then(invocationOnMock -> {
-//            Statement arg = (Statement) invocationOnMock.getArgument(0);
-//            arg.setId(1);
-//            return arg;
-//        });
+        when(statementRepository.saveAll(statements)).thenReturn(statements);
 
         //when
-        Statement savedStatement = statementService.create(statement);
+        List<Statement> savedStatements = statementService.saveAll(statements);
 
         //then
-        Assertions.assertNotNull(savedStatement);
-        Assertions.assertEquals(text, savedStatement.getText());
+        assertNotNull(savedStatements);
+        assertEquals(text, savedStatements.get(0).getText());
     }
 
     @Test
@@ -60,12 +57,12 @@ public class StatementServiceTest {
         foundStatements.add(statement1);
         foundStatements.add(statement2);
 
-        Mockito.when(statementRepository.findAllById(ids)).thenReturn(foundStatements);
+        when(statementRepository.findAllById(ids)).thenReturn(foundStatements);
 
         //when
         List<Statement> statements = statementService.loadStatementsById(ids);
 
         //then
-        Assertions.assertEquals(2, statements.size());
+        assertEquals(2, statements.size());
     }
 }
